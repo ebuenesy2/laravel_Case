@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB; //Veri Tabanı İşlemleri
+use App\Models\Customer; //! Müşteri
+
 
 class App extends Controller
 {
@@ -15,8 +18,12 @@ class App extends Controller
         
         try {
          
+            //? Müşteriler
+            $dbUsers= DB::table('customer')->get(); //? Tüm Veriler
+            //echo "<pre>"; print_r($dbUsers); die();
+
             //! Return
-            $DB =  [];
+            $DB['dbUsers'] = $dbUsers ;
 
             return view('home',$DB);
             
