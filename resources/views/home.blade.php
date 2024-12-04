@@ -32,6 +32,15 @@
 
     <div class="container">
         <h1> Müşteri Bilgileri</h1>
+
+        <div  style="display: flex;justify-content: space-between;" >
+            <div style="display: flex;gap: 10px;" >
+                <button class="btn btn-success">Ekle</button>
+                <button class="btn btn-info" >Excel Veri Ekle</button>
+            </div>
+            <a href="/@lang('admin.lang')/login"> <button class="btn btn-danger" >Cıkış Yap</button></a>
+        </div>
+
         <br><hr>
 
         <table id="example" class="table table-striped" style="width:100%">
