@@ -37,9 +37,9 @@
         <hr>
 
         
-        @if(session('status_import') == "succes")
+        @if(session('status') == "succes")
             <div class="alert alert-success " role="alert"> {{session('msg')}}  </div>
-        @elseif(session('status_import') == "error")
+        @elseif(session('status') == "error")
             <div class="alert alert-danger " role="alert"> {{session('msg')}}  </div>
         @endif
 
@@ -74,6 +74,7 @@
                     <th>Email</th>
                     <th>Firma</th>
                     <th>Oluşturma Tarihi</th>
+                    @if($yildirimdev_roleID == "1")  <th>İşlemler</th> @endif
                 </tr>
             </thead>
             <tbody>
@@ -85,6 +86,7 @@
                     <td>{{$dbCustomer[$i]->email}}</td>
                     <td>{{$dbCustomer[$i]->company}}</td>
                     <td>{{$dbCustomer[$i]->created_at}}</td>
+                    @if($yildirimdev_roleID == "1") <td><a href="/customer/delete/{{$dbCustomer[$i]->id}}"><button class="btn btn-danger" >Sil</button></a></td> @endif
                 </tr>
                 @endfor
               

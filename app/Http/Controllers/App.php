@@ -150,15 +150,33 @@ class App extends Controller
          //dd($request->file('file'));
          Excel::import(new CustomerImport, $request->file('file'));
 
-         return redirect('/tr')->with('status_import',"succes")->with('msg','Excel import edildi');
+         return redirect('/tr')->with('status',"succes")->with('msg','Excel import edildi');
         
        } catch (\Throwable $th) {
 
-         return redirect('/tr')->with('status_import',"error")->with('msg','Excel Hatası: Dosya Yüklenemedi');
+         return redirect('/tr')->with('status',"error")->with('msg','Excel Hatası: Dosya Yüklenemedi');
        
        }
 
     }
     //! Excel Import Son
+
+    //! Müşteri Silme
+    public function CustomerDelete($id)
+    {
+        
+        try {
+            
+            //veri tabanı işlemleri
+            DB::table('customer')->where('id',$id)->delete();
+            return redirect('/tr')->with('status',"succes")->with('msg','Veri Silindi');
+            
+        } catch (\Throwable $th) {
+
+            return redirect('/tr')->with('status',"error")->with('msg','Müşteri Silinemedi');
+        }
+        
+        
+    }
 
 }

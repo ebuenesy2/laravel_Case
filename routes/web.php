@@ -13,4 +13,5 @@ Route::post('/login/control', [App::class,'LoginControl']) -> name("login.contro
 
 
 //! Excel
-Route::post('/import/post', [App::class,'importPost']) -> name('import.post'); //! Import Excel
+Route::post('customer/import/post', [App::class,'importPost']) -> name('import.post'); //! Import Excel
+Route::get('/customer/delete/{id}', [App::class,'CustomerDelete']) -> name("customer.customer"); //! Müşteri Silme
