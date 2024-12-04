@@ -34,6 +34,7 @@ Middleware
 Migration
 Seeder
 Model
+Excel Toplu Yükleme
 ```
 
 # Veri Tabanı İşlemleri
