@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB; //Veri Tabanı İşlemleri
 use App\Models\Customer; //! Müşteri
+use App\Imports\CustomerImport; //! Import Class
+use Maatwebsite\Excel\Facades\Excel; //! Excel
 
 
 class App extends Controller
@@ -127,5 +129,19 @@ class App extends Controller
         } catch (\Throwable $th) { throw $th; }
 
     } //! Giriş Kontrol Son
+
+
+    //! Excel Import
+    public function importPost(Request $request)
+    {
+
+        //dd($request->file('file'));
+
+        Excel::import(new CustomerImport, $request->file('file'));
+
+        echo "Import oldu";
+
+    }
+    //! Excel Import Son
 
 }

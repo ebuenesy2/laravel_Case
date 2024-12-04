@@ -10,3 +10,7 @@ Route::get('/{lang}', [App::class,'Index']) -> name("web.index"); //! Web Anasay
 //! Kullanıcı
 Route::get('/{lang}/login', [App::class,'login']) -> name('login'); //! Giriş
 Route::post('/login/control', [App::class,'LoginControl']) -> name("login.control"); //! Giriş Kontrol
+
+
+//! Excel
+Route::post('/import/post', [App::class,'importPost']) -> name('import.post'); //! Import Excel

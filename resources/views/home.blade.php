@@ -36,8 +36,20 @@
         <div  style="display: flex;justify-content: space-between;" >
             <div style="display: flex;gap: 10px;" >
                 <button class="btn btn-success">Ekle</button>
-                <button class="btn btn-info" >Excel Veri Ekle</button>
+                
+                <div style="border: 1px solid;padding: 10px;">
+                    <p>Excel Veri Okuma</p>
+                    <form action="{{route('import.post')}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="file" id="file">
+                        <button class="btn btn-info" type="submit">Excel Veri Ekle</button>
+                    </form>
+                </div>
+
             </div>
+
+          
+          
             <a href="/@lang('admin.lang')/login"> <button class="btn btn-danger" >Cıkış Yap</button></a>
         </div>
 
