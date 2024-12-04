@@ -30,7 +30,15 @@ composer update
 
 # Veri Tabanı İşlemleri
 
-## Veri Tabanı İşlemleri [ migrate ]
+## Veri Tabanı Oluşturma [ migrate ]
 ```
 php artisan migrate
+```
+
+## Veri Tabanı - Verileri Kaydetme [ seeder ]
+```
+php artisan db:seed
+```
+```
+php artisan migrate:fresh --seed
 ```
