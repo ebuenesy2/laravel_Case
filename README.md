@@ -28,6 +28,14 @@ composer i
 composer update
 ```
 
+## İçindekiler
+```
+Middleware
+Migration
+Seeder
+Model
+```
+
 # Veri Tabanı İşlemleri
 
 ## Veri Tabanı Oluşturma [ migrate ]
