@@ -22,7 +22,11 @@ class App extends Controller
 
             //! Tanım
             $yildirimdev_userCheck = 0; //! Kullanıcı Onay
-            if(isset($_COOKIE["yildirimdev_userID"])) {  $yildirimdev_userCheck = 1; } //! Kullanıcı Giriş Durumu
+            if(isset($_COOKIE["yildirimdev_userID"])) {  
+                $yildirimdev_userCheck = 1; 
+                $yildirimdev_email = $_COOKIE["yildirimdev_email"];
+                $yildirimdev_roleID = $_COOKIE["yildirimdev_roleID"];
+            } //! Kullanıcı Giriş Durumu
 
             //? Session Varmı
             if(session('status')=="succes") {   //echo "session var"; die();
@@ -34,6 +38,10 @@ class App extends Controller
                 setcookie("yildirimdev_surname",session('yildirimdev_surname'),time()+86400);  
                 setcookie("yildirimdev_roleID",session('yildirimdev_roleID'),time()+86400); 
 
+                //! Veriler
+                $yildirimdev_email = session('yildirimdev_email');
+                $yildirimdev_roleID = session('yildirimdev_roleID');
+
             } //? Session Varmı Son
 
 
@@ -42,11 +50,13 @@ class App extends Controller
             else { //echo "Kullanıcı giriş var"; die();
             
                 //? Müşteriler
-                $dbUsers= DB::table('customer')->get(); //? Tüm Veriler
-                //echo "<pre>"; print_r($dbUsers); die();
+                $dbCustomer= DB::table('customer')->get(); //? Tüm Veriler
+                //echo "<pre>"; print_r($dbCustomer); die();
 
                 //! Return
-                $DB['dbUsers'] = $dbUsers ;
+                $DB['yildirimdev_email'] = $yildirimdev_email;
+                $DB['yildirimdev_roleID'] = $yildirimdev_roleID;
+                $DB['dbCustomer'] = $dbCustomer ;
 
                 return view('home',$DB);
 
@@ -135,11 +145,18 @@ class App extends Controller
     public function importPost(Request $request)
     {
 
-        //dd($request->file('file'));
+       try {
+        
+         //dd($request->file('file'));
+         Excel::import(new CustomerImport, $request->file('file'));
 
-        Excel::import(new CustomerImport, $request->file('file'));
+         return redirect('/tr')->with('status_import',"succes")->with('msg','Excel import edildi');
+        
+       } catch (\Throwable $th) {
 
-        echo "Import oldu";
+         return redirect('/tr')->with('status_import',"error")->with('msg','Excel Hatası: Dosya Yüklenemedi');
+       
+       }
 
     }
     //! Excel Import Son

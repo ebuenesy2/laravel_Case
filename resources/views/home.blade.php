@@ -33,7 +33,19 @@
     <div class="container">
         <h1> Müşteri Bilgileri</h1>
 
+        <p> Email: {{$yildirimdev_email}}  </p>
+        <hr>
+
+        
+        @if(session('status_import') == "succes")
+            <div class="alert alert-success " role="alert"> {{session('msg')}}  </div>
+        @elseif(session('status_import') == "error")
+            <div class="alert alert-danger " role="alert"> {{session('msg')}}  </div>
+        @endif
+
         <div  style="display: flex;justify-content: space-between;" >
+
+            @if($yildirimdev_roleID == "1")
             <div style="display: flex;gap: 10px;" >
                 <button class="btn btn-success">Ekle</button>
                 
@@ -47,8 +59,7 @@
                 </div>
 
             </div>
-
-          
+            @endif
           
             <a href="/@lang('admin.lang')/login"> <button class="btn btn-danger" >Cıkış Yap</button></a>
         </div>
@@ -62,16 +73,18 @@
                     <th>Soyadı</th>
                     <th>Email</th>
                     <th>Firma</th>
+                    <th>Oluşturma Tarihi</th>
                 </tr>
             </thead>
             <tbody>
 
-                @for ($i = 0; $i < count($dbUsers); $i++)
+                @for ($i = 0; $i < count($dbCustomer); $i++)
                 <tr>
-                    <td>{{$dbUsers[$i]->name}}</td>
-                    <td>{{$dbUsers[$i]->surname}}</td>
-                    <td>{{$dbUsers[$i]->email}}</td>
-                    <td>{{$dbUsers[$i]->company}}</td>
+                    <td>{{$dbCustomer[$i]->name}}</td>
+                    <td>{{$dbCustomer[$i]->surname}}</td>
+                    <td>{{$dbCustomer[$i]->email}}</td>
+                    <td>{{$dbCustomer[$i]->company}}</td>
+                    <td>{{$dbCustomer[$i]->created_at}}</td>
                 </tr>
                 @endfor
               
