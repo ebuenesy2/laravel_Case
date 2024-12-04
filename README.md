@@ -35,7 +35,7 @@ composer update
 php artisan migrate
 ```
 
-## Veri Tabanı - Verileri Kaydetme [ seeder ]
+## Veri Tabanı - Verileri Başlangıcta Kaydetme [ seeder ]
 ```
 php artisan db:seed
 ```
