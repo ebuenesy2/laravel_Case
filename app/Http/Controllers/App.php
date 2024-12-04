@@ -17,15 +17,39 @@ class App extends Controller
         //echo "Dil:"; echo $site_lang;  echo "<br/>";  die();
         
         try {
+
+            //! Tanım
+            $yildirimdev_userCheck = 0; //! Kullanıcı Onay
+            if(isset($_COOKIE["yildirimdev_userID"])) {  $yildirimdev_userCheck = 1; } //! Kullanıcı Giriş Durumu
+
+            //? Session Varmı
+            if(session('status')=="succes") {   //echo "session var"; die();
+
+                $yildirimdev_userCheck = 1; //! Kullanıcı Giriş Durumu
+                setcookie("yildirimdev_userID",session('yildirimdev_userID'),time()+86400);  //! id
+                setcookie("yildirimdev_email",session('yildirimdev_email'),time()+86400);  
+                setcookie("yildirimdev_name",session('yildirimdev_name'),time()+86400);  
+                setcookie("yildirimdev_surname",session('yildirimdev_surname'),time()+86400);  
+                setcookie("yildirimdev_roleID",session('yildirimdev_roleID'),time()+86400); 
+
+            } //? Session Varmı Son
+
+
+            //! Sayfa Yönlendirme
+            if($yildirimdev_userCheck == 0) {  return redirect('/'.__('admin.lang').'/'.'login/');  }  //! Giriş Yok
+            else { //echo "Kullanıcı giriş var"; die();
+            
+                //? Müşteriler
+                $dbUsers= DB::table('customer')->get(); //? Tüm Veriler
+                //echo "<pre>"; print_r($dbUsers); die();
+
+                //! Return
+                $DB['dbUsers'] = $dbUsers ;
+
+                return view('home',$DB);
+
+            }
          
-            //? Müşteriler
-            $dbUsers= DB::table('customer')->get(); //? Tüm Veriler
-            //echo "<pre>"; print_r($dbUsers); die();
-
-            //! Return
-            $DB['dbUsers'] = $dbUsers ;
-
-            return view('home',$DB);
             
         } catch (\Throwable $th) {
             throw $th;
@@ -38,6 +62,13 @@ class App extends Controller
     {
         \Illuminate\Support\Facades\App::setLocale($site_lang); //! Çoklu Dil
         //echo "Dil:"; echo $site_lang;  echo "<br/>";  die();
+
+        //! Çerezleri Sil
+        setcookie("yildirimdev_userID","", time() - 86400,'/'); //! Cookie Silme
+        setcookie("yildirimdev_email","", time() - 86400,'/'); //! Cookie Silme
+        setcookie("yildirimdev_name","", time() - 86400,'/'); //! Cookie Silme
+        setcookie("yildirimdev_surname","", time() - 86400,'/'); //! Cookie Silme
+        setcookie("yildirimdev_roleID","", time() - 86400,'/'); //! Cookie Silme
 
         //! Return
         $DB =  [];
@@ -57,15 +88,12 @@ class App extends Controller
             $siteLang= $request->siteLang; //! Çoklu Dil
             \Illuminate\Support\Facades\App::setLocale($siteLang); //! Çoklu Dil
 
-            echo "loginControl"; die();
-
             //! Gelen Bilgiler
             $email= $request->email;
             $password= $request->password;
             
             //! Tanım
             $loginCheck=0; //! Login Durumu
-      
 
             //veri tabanı işlemleri
             $DB_Where= DB::table('users')->where('email','=',$email)->where('password','=',$password)->first();
@@ -75,28 +103,23 @@ class App extends Controller
                 //echo "Kullancı Giriş Var"; die();
 
                 $loginCheck = 1;
-                $activeCheck = $DB_Where->isActive;
-                
+
                 $yildirimdev_userID = $DB_Where->id;
                 $yildirimdev_email = $DB_Where->email;
                 $yildirimdev_name = $DB_Where->name;
                 $yildirimdev_surname = $DB_Where->surname;
-                $yildirimdev_img_url = $DB_Where->img_url;
-                $yildirimdev_departmanID = $DB_Where->departman_id;
-                $yildirimdev_roleID = $DB_Where->role_id;
+                $yildirimdev_roleID = $DB_Where->role;
             }
-
             
             //! Login Durumuna Yönlendirme
             if($loginCheck == 1) { 
                 //echo "Login Oldu"; die();
 
-                if($activeCheck == 0) { return redirect('/'.__('admin.lang').'/error/account/block'); }
-                else { return redirect('/'.__('admin.lang').'/admin')->with('status',"succes")
+               
+                return redirect('/'.__('admin.lang'))->with('status',"succes")
                     ->with('yildirimdev_userID',$yildirimdev_userID)->with('yildirimdev_email',$yildirimdev_email)
-                    ->with('yildirimdev_name',$yildirimdev_name)->with('yildirimdev_surname',$yildirimdev_surname)->with('yildirimdev_img_url',$yildirimdev_img_url) 
-                    ->with('yildirimdev_departmanID',$yildirimdev_departmanID)->with('yildirimdev_roleID',$yildirimdev_roleID);
-                }
+                    ->with('yildirimdev_name',$yildirimdev_name)->with('yildirimdev_surname',$yildirimdev_surname)->with('yildirimdev_roleID',$yildirimdev_roleID);
+          
             }
             else {  return redirect('/'.__('admin.lang').'/admin/login')->with('status',"error")->with('msg', __('admin.theEmailPasswordMayBeIncorrect')); }
             //! Login Durumuna Yönlendirme Son

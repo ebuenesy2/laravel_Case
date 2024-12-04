@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\App;
 
 Route::get('/', [App::class,'index']) -> name('index');
-Route::get('/{lang}', [Web::class,'Index']) -> name("web.index"); //! Web Anasayfa
+Route::get('/{lang}', [App::class,'Index']) -> name("web.index"); //! Web Anasayfa
 
 
 //! Kullanıcı
